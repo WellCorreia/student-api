@@ -9,4 +9,8 @@ public class StudentNotFoundException extends Exception{
     public StudentNotFoundException(String registry) {
         super(String.format("Student with registry %s not found in the system.", registry));
     }
+
+    public StudentNotFoundException(Long id) {
+        super(String.format("Student with id %d not found in the system.", id));
+    }
 }
