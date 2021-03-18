@@ -26,10 +26,6 @@ public class StudentDTO {
     private String name;
 
     @NotNull
-    @Max(11)
-    private String cpf;
-
-    @NotNull
     @Max(150)
     private int age;
 

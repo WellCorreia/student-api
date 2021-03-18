@@ -20,9 +20,6 @@ public class Student {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String cpf;
-
     @Column(nullable = false)
     private int age;
 
