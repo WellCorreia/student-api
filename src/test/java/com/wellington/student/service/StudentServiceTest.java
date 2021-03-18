@@ -1,5 +1,6 @@
 package com.wellington.student.service;
 
+import com.wellington.student.builder.StudentDTOBuilder;
 import com.wellington.student.dto.StudentDTO;
 import com.wellington.student.entity.Student;
 import com.wellington.student.exception.StudentAlreadyRegisteredException;
@@ -21,16 +22,13 @@ import static org.mockito.Mockito.verify;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
 
-    private static final long INVALID_STUDENT_ID = 1L;
-
     @Mock
     private StudentRepository studentRepository;
-    private StudentMapper studentMapper = StudentMapper.INSTANCE;
+    private final StudentMapper studentMapper = StudentMapper.INSTANCE;
 
     @InjectMocks
     private StudentService studentService;
@@ -38,7 +36,7 @@ public class StudentServiceTest {
     @Test
     void whenStudentInformedThenItShouldBeCreated() throws StudentAlreadyRegisteredException {
         // Given
-        StudentDTO studentDTO = StudentDTO.builder().build();
+        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -57,7 +55,7 @@ public class StudentServiceTest {
     @Test
     void whenStudentAlreadyCreatedThenItNotShouldBeCreated() {
         // Given
-        StudentDTO studentDTO = StudentDTO.builder().build();
+        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -70,7 +68,7 @@ public class StudentServiceTest {
     @Test
     void whenListAllStudentIsCalledThenReturnAListOfStudents() {
         // Given
-        StudentDTO studentDTO = StudentDTO.builder().build();
+        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -94,9 +92,9 @@ public class StudentServiceTest {
     }
 
     @Test
-    void whenDeleteBeerIsCalledThenABeerShouldBeDelete() throws StudentNotFoundException {
+    void whenDeleteStudentIsCalledThenAStudentShouldBeDelete() throws StudentNotFoundException {
         //given
-        StudentDTO studentDTO = StudentDTO.builder().build();
+        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         //when
@@ -108,5 +106,24 @@ public class StudentServiceTest {
 
         verify(studentRepository, Mockito.times(1)).findById(studentDTO.getId());
         verify(studentRepository, Mockito.times(1)).deleteById(studentDTO.getId());
+    }
+
+    @Test
+    void whenUpdateStudentIsCalledThenAStudentShouldBeUpdated() throws StudentNotFoundException {
+        //given
+        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
+        Student student = studentMapper.toModel(studentDTO);
+
+        // When
+        Mockito.when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(student));
+        Mockito.when(studentRepository.save(student)).thenReturn(student);
+
+        // Then
+        int age = 65;
+        studentDTO.setAge(age);
+
+        StudentDTO studentDTOUpdated = studentService.update(studentDTO.getId(), studentDTO);
+
+        MatcherAssert.assertThat(student.getAge(), Matchers.lessThan(studentDTOUpdated.getAge()));
     }
 }

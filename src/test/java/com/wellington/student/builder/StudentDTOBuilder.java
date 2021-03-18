@@ -23,6 +23,12 @@ public class StudentDTOBuilder {
     private GradeType grade = GradeType.FIRST;
 
     public StudentDTO toStudentDTO() {
-        return new StudentDTO(id, name, age, registry, grade);
+
+        return new StudentDTO(
+                id,
+                name,
+                age,
+                registry,
+                grade);
     }
 }
