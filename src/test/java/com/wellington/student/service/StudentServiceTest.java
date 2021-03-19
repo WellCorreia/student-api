@@ -36,7 +36,9 @@ public class StudentServiceTest {
     @Test
     void whenStudentInformedThenItShouldBeCreated() throws StudentAlreadyRegisteredException {
         // Given
-        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
+        StudentDTOBuilder studentDTOBuilder = new StudentDTOBuilder();
+
+        StudentDTO studentDTO = studentDTOBuilder.toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -55,7 +57,9 @@ public class StudentServiceTest {
     @Test
     void whenStudentAlreadyCreatedThenItNotShouldBeCreated() {
         // Given
-        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
+        StudentDTOBuilder studentDTOBuilder = new StudentDTOBuilder();
+
+        StudentDTO studentDTO = studentDTOBuilder.toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -68,7 +72,9 @@ public class StudentServiceTest {
     @Test
     void whenListAllStudentIsCalledThenReturnAListOfStudents() {
         // Given
-        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
+        StudentDTOBuilder studentDTOBuilder = new StudentDTOBuilder();
+
+        StudentDTO studentDTO = studentDTOBuilder.toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -94,7 +100,9 @@ public class StudentServiceTest {
     @Test
     void whenDeleteStudentIsCalledThenAStudentShouldBeDelete() throws StudentNotFoundException {
         //given
-        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
+        StudentDTOBuilder studentDTOBuilder = new StudentDTOBuilder();
+
+        StudentDTO studentDTO = studentDTOBuilder.toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         //when
@@ -111,7 +119,9 @@ public class StudentServiceTest {
     @Test
     void whenUpdateStudentIsCalledThenAStudentShouldBeUpdated() throws StudentNotFoundException {
         //given
-        StudentDTO studentDTO = StudentDTOBuilder.builder().build().toStudentDTO();
+        StudentDTOBuilder studentDTOBuilder = new StudentDTOBuilder();
+
+        StudentDTO studentDTO = studentDTOBuilder.toStudentDTO();
         Student student = studentMapper.toModel(studentDTO);
 
         // When
@@ -119,11 +129,9 @@ public class StudentServiceTest {
         Mockito.when(studentRepository.save(student)).thenReturn(student);
 
         // Then
-        int age = 65;
-        studentDTO.setAge(age);
-
+        int age = student.getAge();
+        studentDTO.setAge(65);
         StudentDTO studentDTOUpdated = studentService.update(studentDTO.getId(), studentDTO);
-
-        MatcherAssert.assertThat(student.getAge(), Matchers.lessThan(studentDTOUpdated.getAge()));
+        MatcherAssert.assertThat(age, Matchers.not(Matchers.equalTo(studentDTOUpdated.getAge())));
     }
 }

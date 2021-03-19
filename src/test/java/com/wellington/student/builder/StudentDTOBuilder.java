@@ -4,7 +4,6 @@ import com.wellington.student.dto.StudentDTO;
 import com.wellington.student.enums.GradeType;
 import lombok.Builder;
 
-@Builder
 public class StudentDTOBuilder {
 
     @Builder.Default
@@ -21,6 +20,9 @@ public class StudentDTOBuilder {
 
     @Builder.Default
     private GradeType grade = GradeType.FIRST;
+
+    public StudentDTOBuilder() {
+    }
 
     public StudentDTO toStudentDTO() {
 

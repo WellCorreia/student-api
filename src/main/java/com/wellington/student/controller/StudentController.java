@@ -45,8 +45,8 @@ public class StudentController {
         return studentService.update(id, studentDTO);
     }
 
-    @DeleteMapping("/{id")
-    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws StudentNotFoundException {
         studentService.delete(id);
     }

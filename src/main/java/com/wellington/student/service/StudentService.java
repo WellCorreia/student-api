@@ -42,9 +42,11 @@ public class StudentService {
     }
 
     public StudentDTO update(Long id, StudentDTO studentDTO) throws StudentNotFoundException {
-        findById(id);
-        Student student = studentMapper.toModel(studentDTO);
-        student.setId(id);
+        Student student = findById(id);
+        student.setAge(studentDTO.getAge());
+        student.setName(studentDTO.getName());
+        student.setGrade(studentDTO.getGrade());
+        student.setRegistry(studentDTO.getRegistry());
         Student studentUpdated = studentRepository.save(student);
         return studentMapper.toDTO(studentUpdated);
     }

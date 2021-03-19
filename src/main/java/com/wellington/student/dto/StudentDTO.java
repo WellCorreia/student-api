@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Data
@@ -27,6 +28,7 @@ public class StudentDTO {
 
     @NotNull
     @Max(150)
+    @Min(0)
     private int age;
 
     @NotNull
